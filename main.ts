@@ -8,3 +8,4 @@ export * from './generic/promiseLocker.js';
 export * from './generic/safeMerge.js';
 export * from './generic/validateZodSchema.js';
 export * from './types/StandardResponse.js';
+export * from './types/utility-types.js';

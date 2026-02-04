@@ -1,0 +1,50 @@
+{
+  "name": "@sergo/utils",
+  "version": "1.0.0",
+  "description": "Collection of generic TypeScript utilities and ESLint configs",
+  "type": "module",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js",
+      "default": "./dist/main.js"
+    },
+    "./eslint/strict": {
+      "types": "./dist/eslint/strict.d.ts",
+      "import": "./dist/eslint/strict.js"
+    },
+    "./eslint/strict/vue": {
+      "types": "./dist/eslint/strict/vue.d.ts",
+      "import": "./dist/eslint/strict/vue.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint .",
+    "prepare": "npm run build",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-vue": "^10.7.0",
+    "pino": "^10.3.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0"
+  },
+  "peerDependencies": {
+    "pino": ">=8.0.0"
+  }
+}

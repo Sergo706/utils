@@ -28,7 +28,6 @@ export type Brand<K, T> = K & { __brand: T };
 
 /**
  * Merges two types, where the second type overrides the first.
- * Cleaner than `A & B` for overlapping keys.
  */
 export type Merge<FirstType, SecondType> = Omit<FirstType, keyof SecondType> & SecondType;
 

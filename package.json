@@ -28,6 +28,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint .",
+    "test": "npx tsx --test tests/*.test.ts",
     "prepare": "npm run build",
     "prepack": "npm run build",
     "typecheck": "tsc --noEmit"

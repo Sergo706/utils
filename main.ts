@@ -1,4 +1,5 @@
 export * from './generic/capitalize.js';
+export * from './generic/chunckProcess.js';
 export * from './generic/cleanObject.js';
 export * from './generic/configurationDefiner.js';
 export { default as ensureArray } from './generic/ensureArray.js';

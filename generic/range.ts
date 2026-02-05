@@ -25,6 +25,9 @@
  * }
  */
 export function range(start: number, end: number, step = 1, inclusiveStart = false) {
+    if (step <= 0) {
+        throw new Error('step must be greater than 0');
+    }
     let current = inclusiveStart ? start : start + step;
 
     return {

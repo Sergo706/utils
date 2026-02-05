@@ -17,13 +17,13 @@
 export function isAsyncOrPromise(input: Function | Promise<unknown> | { then?: unknown }): boolean {
   if (!input) return false;
 
+  if (input instanceof Promise || (typeof input === 'object' && typeof input.then === 'function')) {
+    return true;
+  }
+  
   if (typeof input === 'function') {
-    return input.constructor.name === 'AsyncFunction';
+     return Object.prototype.toString.call(input) === '[object AsyncFunction]';
   }
 
-  return (
-    input instanceof Promise || 
-    (typeof input === 'object' && typeof input.then === 'function')
-  );
+  return false;
 }
-

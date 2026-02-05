@@ -1,11 +1,16 @@
+export * from './generic/capitalize.js';
 export * from './generic/cleanObject.js';
 export * from './generic/configurationDefiner.js';
 export { default as ensureArray } from './generic/ensureArray.js';
+export * from './generic/filterArray.js';
 export * from './generic/findObjectValues.js';
 export * from './generic/isObjectHasValues.js';
 export * from './generic/miniCache.js';
 export * from './generic/promiseLocker.js';
+export * from './generic/random.js';
+export * from './generic/range.js';
 export * from './generic/safeMerge.js';
 export * from './generic/validateZodSchema.js';
+
 export * from './types/StandardResponse.js';
 export * from './types/utility-types.js';

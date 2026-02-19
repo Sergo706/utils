@@ -18,6 +18,10 @@
     "./eslint/strict/vue": {
       "types": "./dist/eslint/strict/vue.d.ts",
       "import": "./dist/eslint/strict/vue.js"
+    },
+    "./eslint/strict/react": {
+      "types": "./dist/eslint/strict/react.d.ts",
+      "import": "./dist/eslint/strict/react.js"
     }
   },
   "files": [
@@ -39,6 +43,7 @@
   "devDependencies": {
     "@types/node": "^25.2.0",
     "eslint": "^9.39.2",
+    "eslint-config-next": "^16.1.6",
     "eslint-plugin-vue": "^10.7.0",
     "mysql2": "^3.17.2",
     "pino": "^10.3.0",

@@ -73,6 +73,19 @@ export function defineStrictReactConfig(options: {
       }
     },
     {
+    name: 'file-level-use-server',
+    files: ['src/**/*.ts', 'src/**/*.tsx'], 
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "Program > ExpressionStatement[expression.value='use server']",
+          message: "File-level 'use server' is banned. Place the directive inside individual exported functions to prevent accidentally exposing private helpers."
+        }
+      ]
+    }
+  },
+    {
       files: ['**/*.{js,cjs,mjs}'],
       rules: { 'no-undef': 'error' }
     },

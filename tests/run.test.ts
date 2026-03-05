@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { run } from '../generic/run.js';
+import { run } from '../server/run.js';
 import path from 'node:path';
 import os from 'node:os';
 

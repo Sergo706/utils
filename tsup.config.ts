@@ -3,6 +3,7 @@ import { defineConfig, type Options } from 'tsup';
 const config: Options = {
   entry: {
     main: './main.ts',
+    server: './server/main.ts',
     'eslint/strict': './eslint/strict.ts.config.ts',
     'eslint/strict/vue': './eslint/strict.vue.config.ts',
     'eslint/strict/react': './eslint/strict.react.config.ts'

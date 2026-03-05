@@ -1,7 +1,7 @@
 import type { Pool, ResultSetHeader } from "mysql2/promise";
 import path from "node:path";
 import  fs  from "node:fs";
-import type { Results } from "../types/StandardResponse.js";
+import type { Results } from "../../types/StandardResponse.js";
 import { execSync } from "node:child_process";
 
 

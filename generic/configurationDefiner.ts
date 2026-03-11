@@ -1,4 +1,10 @@
 import z, { type ZodType } from "zod";
+/**
+ * A task to be executed during configuration initialization.
+ * Receives the configuration object as a parameter and can optionally return a Promise
+ * for asynchronous setup that will be safely awaited.
+ */
+type InitializationTask = (config: unknown) => Promise<void> | void;
 
 /**
  * Creates a type-safe configuration manager for a project.
@@ -26,11 +32,18 @@ export function createConfigManager<T>(schema: ZodType<T>, projectName = "App") 
    * This should typically be called once during the application's bootstrapping phase.
    * 
    * @param config - The raw configuration object to validate.
+   * @param initializations - Optional array of functions to run after validation.
+   *   Each initialization task receives the parsed `config` as a parameter. Any returned 
+   *   Promises are awaited concurrently before the configuration is finalized.
    * @throws Error with detailed Zod validation failure information if validation fails.
    */
-  function defineConfiguration(config: unknown): void {
+  async function defineConfiguration(config: unknown, initializations: InitializationTask[] = []): Promise<void> {
     try {
-      const validated = schema.parse(config);
+      const validated = schema.parse(config);  
+      
+      const promises = initializations.map(f => f(config));
+      await Promise.all(promises);
+
       cfg = Object.freeze(validated);
     } catch (err) {
       if (err instanceof z.ZodError) {

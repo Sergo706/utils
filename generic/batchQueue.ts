@@ -29,7 +29,7 @@ export interface BatchQueueOptions {
     logger?: Pick<Console, 'error' | 'info'>;
 }
 
-interface BatchJob<T> {
+export interface BatchJob<T> {
     id: string;
     priority: Priority;
     params: T;

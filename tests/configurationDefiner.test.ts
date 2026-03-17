@@ -41,9 +41,9 @@ describe('configurationDefiner', () => {
 
     type Config = z.infer<typeof Schema>;
 
-    test('initializes and retrieves valid configuration', () => {
+    test('initializes and retrieves valid configuration', async () => {
         const manager = createConfigManager(Schema, 'TestApp');
-        
+
         const validConfig = {
             server: {
                 host: 'localhost',
@@ -60,16 +60,16 @@ describe('configurationDefiner', () => {
             }
         };
 
-        manager.defineConfiguration(validConfig);
+        await manager.defineConfiguration(validConfig);
         const config = manager.getConfiguration();
         
         assert.deepStrictEqual(config.server, validConfig.server);
         assert.strictEqual(config.database.options.timeout, 5000);
     });
 
-    test('throws detailed error for invalid schema structure', () => {
+    test('throws detailed error for invalid schema structure', async () => {
         const manager = createConfigManager(Schema, 'TestApp');
-        
+
         const invalidConfig = {
             server: {
                 host: 'not-an-ip',
@@ -81,12 +81,12 @@ describe('configurationDefiner', () => {
             },
             auth: {
                 providers: [{ name: 'google', clientId: '123', secret: 'short' }],
-                session: { ttl: 3600, secure: true } 
+                session: { ttl: 3600, secure: true }
             }
         };
 
         try {
-            manager.defineConfiguration(invalidConfig);
+            await manager.defineConfiguration(invalidConfig);
             assert.fail('Should have thrown validation error');
         } catch (err: any) {
             assert.ok(err.message.includes('Configuration validation failed'));
@@ -97,7 +97,7 @@ describe('configurationDefiner', () => {
         }
     });
 
-    test('throws error for invalid refined logic', () => {
+    test('throws error for invalid refined logic', async () => {
         const manager = createConfigManager(Schema, 'TestApp');
 
         const invalidRefinementConfig = {
@@ -117,7 +117,7 @@ describe('configurationDefiner', () => {
         };
 
         try {
-            manager.defineConfiguration(invalidRefinementConfig);
+            await manager.defineConfiguration(invalidRefinementConfig);
             assert.fail('Should have thrown refinement error');
         } catch (err: any) {
             assert.ok(err.message.includes('Secure sessions are required in production'));
@@ -132,7 +132,7 @@ describe('configurationDefiner', () => {
         }, /Configuration must be initialized/);
     });
 
-    test('returns frozen immutable configuration object', () => {
+    test('returns frozen immutable configuration object', async () => {
         const manager = createConfigManager(Schema, 'TestApp');
         const validConfig = {
             server: { host: 'localhost', port: 8080, env: 'development' },
@@ -140,7 +140,7 @@ describe('configurationDefiner', () => {
             auth: { providers: [], session: { ttl: 60, secure: false } }
         };
 
-        manager.defineConfiguration(validConfig);
+        await manager.defineConfiguration(validConfig);
         const config = manager.getConfiguration();
 
         assert.ok(Object.isFrozen(config));

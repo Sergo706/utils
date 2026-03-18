@@ -40,8 +40,7 @@ export function createConfigManager<T>(schema: ZodType<T>, projectName = "App") 
   async function defineConfiguration(config: unknown, initializations: InitializationTask[] = []): Promise<void> {
     try {
       const validated = schema.parse(config);  
-      
-      const promises = initializations.map(f => f(config));
+      const promises = initializations.map(f => f(validated)); 
       await Promise.all(promises);
 
       cfg = Object.freeze(validated);

@@ -10,9 +10,8 @@ import type { Results } from "../../types/StandardResponse.js";
  * Bulk loads data from a CSV file directly into a MySQL or PostgreSQL table.
  * * For MySQL, uses `LOAD DATA LOCAL INFILE`. The pool MUST be configured with
  * `flags: ['+LOCAL_FILES']` or the query will hang indefinitely.
- * * For PostgreSQL, uses `COPY tableName FROM '/path'` (requires `pg_read_server_files` privilege).
- * * File row limiting is handled in Node.js (platform-agnostic — no shell `head` command).
- * * @param paths - Relative or absolute path to the CSV file. Resolves from `process.cwd()`.
+ *  For PostgreSQL, uses `COPY tableName FROM '/path'` (requires `pg_read_server_files` privilege).
+ * @param paths - Relative or absolute path to the CSV file. Resolves from `process.cwd()`.
  * @param tableName - The exact name of the target database table.
  * @param pool - A configured `mysql2/promise` or `pg` connection pool.
  * @param dialect - The database dialect: `'mysql'` or `'pg'`.

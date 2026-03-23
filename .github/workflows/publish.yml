@@ -30,6 +30,6 @@ jobs:
 
       - name: Build
         run: npm run build
- 
+  
       - name: Publish to NPM
         run: npm publish --access public

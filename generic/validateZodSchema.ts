@@ -19,8 +19,6 @@ interface CustomValidationError { valid: false; errors: Record<string, string> }
  * @returns A Zod success result or a custom validation error object.
  */
 
-interface CustomValidationError { valid: false; errors: Record<string, string> };
-
 export function validateZodSchema<T, Input>(schema: ZodType<T, Input>,data: Input, log: pino.Logger)
 : ZodSafeParseSuccess<T> | CustomValidationError {
     log.info(`Validating schema...`);

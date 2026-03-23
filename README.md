@@ -5,7 +5,7 @@ A collection of generic TypeScript utilities and types.
 ## Structure
 
 - **`generic/`**: Core utility functions for data manipulation, sanitization, and validation.
-- **`eslint/`**: Reusable ESLint configurations for Vue and TypeScript.
+- **`eslint/`**: Reusable ESLint configurations for Vue/Next.js and TypeScript.
 - **`types/`**: Shared TypeScript interfaces and unified API response formats.
 - **`server/`**: Server utilities.
 
@@ -59,7 +59,7 @@ const up = await uploadCsv(csvPath, 'table_name', pool as PgPool, 'pg');
 const up = await uploadCsv(csvPath, 'table_name', pool as Pool, 'mysql');
 ```
 Check directly the source code to see available utils, docs available via [ts-docs](https://tsdoc.org/), and a dedicated site is coming soon.
-
 Supports esm and cjs.
+
 ---
 MIT License

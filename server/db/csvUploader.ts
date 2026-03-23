@@ -1,5 +1,5 @@
 import type { Pool as MysqlPool, ResultSetHeader } from "mysql2/promise";
-import type { Pool as PgPool } from "pg";
+import { PostgresPool } from "./_type.js";
 import path from "node:path";
 import os from "node:os";
 import fs from "node:fs";
@@ -27,7 +27,7 @@ import type { Results } from "../../types/StandardResponse.js";
 export async function uploadCsv(
   paths: string,
   tableName: string,
-  pool: MysqlPool | PgPool,
+  pool: MysqlPool | PostgresPool,
   dialect: "mysql" | "pg",
   limit?: number,
   timeoutMs?: number,
@@ -66,7 +66,7 @@ export async function uploadCsv(
 
     const upload = dialect === "mysql"
       ? uploadMysql(pool as MysqlPool, tableName, loadPath, timeoutMs)
-      : uploadPg(pool as PgPool, tableName, loadPath, timeoutMs);
+      : uploadPg(pool as PostgresPool, tableName, loadPath, timeoutMs);
 
     await (timeoutMs ? Promise.race([upload, rejectAfter(timeoutMs)]) : upload);
 
@@ -130,7 +130,7 @@ function rejectAfter(ms: number): Promise<never> {
   );
 }
 
-async function uploadPg(pool: PgPool, tableName: string, loadPath: string, timeoutMs?: number): Promise<void> {
+async function uploadPg(pool: PostgresPool, tableName: string, loadPath: string, timeoutMs?: number): Promise<void> {
   const client = await pool.connect();
   try {
     if (timeoutMs) await client.query(`SET statement_timeout = ${String(timeoutMs)}`);

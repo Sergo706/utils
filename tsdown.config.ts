@@ -25,6 +25,7 @@ const shared: UserConfig = {
             'pino',
             'eslint',
             'mysql2',
+            'pg',
             'typescript-eslint',
             /^next/,
             /^eslint-plugin-/, 

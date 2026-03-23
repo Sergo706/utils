@@ -1,0 +1,1 @@
+export type PostgresPool = import("pg").Pool;

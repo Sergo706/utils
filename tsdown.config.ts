@@ -1,23 +1,15 @@
-import { defineConfig } from 'tsdown';
+import { defineConfig, type UserConfig } from 'tsdown';
 
-export default defineConfig(
-    {
-    entry: {
-        main: './main.ts',
-        'eslint/strict': './eslint/strict.ts.config.ts',
-        'eslint/strict/vue': './eslint/strict.vue.config.ts',
-        'eslint/strict/react': './eslint/strict.react.config.ts',
-        server: './server/main.ts',
-    },
+
+const shared: UserConfig = {
     target: ['node18', "es2020"],
     format: ['esm', 'cjs'],
     clean: true,
-    treeshake: true,
     sourcemap: true,
-    minify: true,
     tsconfig: 'tsconfig.json',
     dts: true,
     failOnWarn: true,
+    treeshake: true,
     publint: {
       level: 'error',
       enabled: 'ci-only',
@@ -41,5 +33,22 @@ export default defineConfig(
             'eslint-config-next'
         ]
     }
-}
-);
+};
+
+export default defineConfig([
+    {
+        entry: { 
+            'eslint/strict': './eslint/strict.ts.config.ts',
+            'eslint/strict/vue': './eslint/strict.vue.config.ts',
+            'eslint/strict/react': './eslint/strict.react.config.ts',
+            server: './server/main.ts' 
+        },
+        ...shared,
+        minify: false,
+    },
+    {
+        ...shared,
+        entry: './main.ts',
+        minify: true,
+    }
+]);

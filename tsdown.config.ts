@@ -24,12 +24,12 @@ const shared: UserConfig = {
             'zod',
             'pino',
             'eslint',
-            'mysql2',
-            'pg',
             'typescript-eslint',
             /^next/,
             /^eslint-plugin-/, 
             /^eslint-config-/,
+            /^mysql2/,
+             /^pg/,
             'eslint-plugin-vue',
             'eslint-config-next'
         ]

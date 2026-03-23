@@ -1,5 +1,4 @@
-import type { Pool as MysqlPool, ResultSetHeader } from "mysql2/promise";
-import { PostgresPool } from "./_type.js";
+import { PostgresPool, MysqlHeader, MysqlPool } from "./_type.js";
 import path from "node:path";
 import os from "node:os";
 import fs from "node:fs";
@@ -27,7 +26,7 @@ import type { Results } from "../../types/StandardResponse.js";
 export async function uploadCsv(
   paths: string,
   tableName: string,
-  pool: MysqlPool | PostgresPool,
+  pool: unknown,
   dialect: "mysql" | "pg",
   limit?: number,
   timeoutMs?: number,
@@ -113,7 +112,7 @@ async function uploadMysql(pool: MysqlPool, tableName: string, loadPath: string,
   const connection = await pool.getConnection();
   try {
     await connection.query("SET SESSION sql_mode = '';");
-    const [res] = await connection.query<ResultSetHeader>({ sql: stm, timeout: timeoutMs });
+    const [res] = await connection.query<MysqlHeader>({ sql: stm, timeout: timeoutMs });
 
     if (!res.affectedRows) {
       const [warns] = await connection.query("SHOW WARNINGS LIMIT 10");

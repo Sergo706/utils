@@ -20,7 +20,7 @@ jobs:
           node-version: '20'
 
       - name: Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Typecheck
         run: npx tsc --noEmit

@@ -20,12 +20,12 @@ export default defineConfig(
     failOnWarn: true,
     publint: {
       level: 'error',
-    //   enabled: 'ci-only',
+      enabled: 'ci-only',
       strict: true,
     },
     attw: {
       level: 'error',
-    //   enabled: 'ci-only'
+      enabled: 'ci-only'
     },
     deps: {
         neverBundle: [
@@ -42,4 +42,4 @@ export default defineConfig(
         ]
     }
 }
-)
+);

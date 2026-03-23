@@ -13,7 +13,7 @@
  */
 export function cleanObject<T extends object>(
     target: T, 
-    visited: WeakSet<object> = new WeakSet<object>()
+    visited = new WeakSet()
 ): Partial<T> {
 
     if (visited.has(target)) {

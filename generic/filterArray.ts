@@ -1,6 +1,6 @@
 
 
-type DeepArray<T> = (T | DeepArray<T> | Record<string, any> | null | undefined | false | "" | 0)[];
+type DeepArray<T> = (T | DeepArray<T> | Record<string, unknown> | null | undefined | false | "" | 0)[];
 
 /**
  * Filters out `null` and `undefined` values from an array.
@@ -22,17 +22,18 @@ type DeepArray<T> = (T | DeepArray<T> | Record<string, any> | null | undefined |
  * filterEmptyValues(input, true)
  * // Returns: [1, { val: [2] }, [3]]
  */
-export function filterEmptyValues<T>(array: DeepArray<T>, deep: boolean = false): T[] {
-    let filtered = array.filter(item => item !== null && item !== undefined) as any[];
+export function filterEmptyValues<T>(array: DeepArray<T>, deep = false): T[] {
+    let filtered = array.filter(item => item !== null && item !== undefined) as unknown[];
 
     if (deep) {
         filtered = filtered.map(item => {
             if (Array.isArray(item)) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return filterEmptyValues(item, true);
             }
 
             if (typeof item === 'object' && item !== null) {
-                const cleanedObj: Record<string, any> = {};
+                const cleanedObj: Record<string, unknown> = {};
 
                 for (const [key, value] of Object.entries(item)) {
                     if (Array.isArray(value)) {

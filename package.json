@@ -28,86 +28,83 @@
     "promise locker",
     "deduplication"
   ],
-"exports": {
-  ".": {
-    "import": {
-      "types": "./dist/main.d.mts",
-      "default": "./dist/main.mjs"
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/main.d.mts",
+        "default": "./dist/main.mjs"
+      },
+      "require": {
+        "types": "./dist/main.d.cts",
+        "default": "./dist/main.cjs"
+      }
     },
-    "require": {
-      "types": "./dist/main.d.cts",
-      "default": "./dist/main.cjs"
+    "./server": {
+      "import": {
+        "types": "./dist/server.d.mts",
+        "default": "./dist/server.mjs"
+      },
+      "require": {
+        "types": "./dist/server.d.cts",
+        "default": "./dist/server.cjs"
+      }
+    },
+    "./eslint/strict": {
+      "import": {
+        "types": "./dist/eslint/strict.d.mts",
+        "default": "./dist/eslint/strict.mjs"
+      },
+      "require": {
+        "types": "./dist/eslint/strict.d.cts",
+        "default": "./dist/eslint/strict.cjs"
+      }
+    },
+    "./eslint/strict/vue": {
+      "import": {
+        "types": "./dist/eslint/strict/vue.d.mts",
+        "default": "./dist/eslint/strict/vue.mjs"
+      },
+      "require": {
+        "types": "./dist/eslint/strict/vue.d.cts",
+        "default": "./dist/eslint/strict/vue.cjs"
+      }
+    },
+    "./eslint/strict/react": {
+      "import": {
+        "types": "./dist/eslint/strict/react.d.mts",
+        "default": "./dist/eslint/strict/react.mjs"
+      },
+      "require": {
+        "types": "./dist/eslint/strict/react.d.cts",
+        "default": "./dist/eslint/strict/react.cjs"
+      }
     }
   },
-  "./server": {
-    "import": {
-      "types": "./dist/server.d.mts",
-      "default": "./dist/server.mjs"
-    },
-    "require": {
-      "types": "./dist/server.d.cts",
-      "default": "./dist/server.cjs"
+  "typesVersions": {
+    "*": {
+      "server": [
+        "./dist/server.d.mts"
+      ],
+      "eslint/strict": [
+        "./dist/eslint/strict.d.mts"
+      ],
+      "eslint/strict/vue": [
+        "./dist/eslint/strict/vue.d.mts"
+      ],
+      "eslint/strict/react": [
+        "./dist/eslint/strict/react.d.mts"
+      ]
     }
   },
-  "./eslint/strict": {
-    "import": {
-      "types": "./dist/eslint/strict.d.mts",
-      "default": "./dist/eslint/strict.mjs"
-    },
-    "require": {
-      "types": "./dist/eslint/strict.d.cts",
-      "default": "./dist/eslint/strict.cjs"
-    }
-  },
-  "./eslint/strict/vue": {
-    "import": {
-      "types": "./dist/eslint/strict/vue.d.mts",
-      "default": "./dist/eslint/strict/vue.mjs"
-    },
-    "require": {
-      "types": "./dist/eslint/strict/vue.d.cts",
-      "default": "./dist/eslint/strict/vue.cjs"
-    }
-  },
-  "./eslint/strict/react": {
-    "import": {
-      "types": "./dist/eslint/strict/react.d.mts",
-      "default": "./dist/eslint/strict/react.mjs"
-    },
-    "require": {
-      "types": "./dist/eslint/strict/react.d.cts",
-      "default": "./dist/eslint/strict/react.cjs"
-    }
-  }
-},
-"typesVersions": {
-  "*": {
-    "server": [
-      "./dist/server.d.mts"
-    ],
-    "eslint/strict": [
-      "./dist/eslint/strict.d.mts"
-    ],
-    "eslint/strict/vue": [
-      "./dist/eslint/strict/vue.d.mts"
-    ],
-    "eslint/strict/react": [
-      "./dist/eslint/strict/react.d.mts"
-    ]
-  }
-},
   "files": [
     "dist",
     "README.md"
   ],
   "scripts": {
     "build": "tsdown",
-    "dev": "tsup --watch",
     "lint": "eslint .",
     "test": "npx tsx --test tests/*.test.ts",
-    "prepare": "npm run build",
-    "prepack": "npm run build",
-    "typecheck": "tsc --noEmit"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "zod": "^4.3.6"
@@ -119,6 +116,7 @@
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6",
     "eslint-plugin-vue": "^10.7.0",
+    "jiti": "^2.6.1",
     "mysql2": "^3.17.2",
     "pg": "^8.20.0",
     "pino": "^10.3.0",

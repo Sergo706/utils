@@ -14,7 +14,9 @@
  * const syncFn = () => 1;
  * isAsyncOrPromise(syncFn); // false
  */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function isAsyncOrPromise(input: Function | Promise<unknown> | { then?: unknown }): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!input) return false;
 
   if (input instanceof Promise || (typeof input === 'object' && typeof input.then === 'function')) {

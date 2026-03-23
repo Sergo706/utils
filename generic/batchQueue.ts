@@ -109,7 +109,7 @@ export class BatchQueue<T> {
     private readonly processor: (params: T) => Promise<void>;
     private readonly log: Pick<Console, 'error' | 'info'>;
 
-    private jobs: Map<string, BatchJob<T>> = new Map();
+    private jobs = new Map<string, BatchJob<T>>();
     private timer: NodeJS.Timeout | null = null;
     private flushPromise: Promise<void> | null = null;
 
@@ -142,8 +142,9 @@ export class BatchQueue<T> {
 
         if (priority === 'immediate' || this.jobs.size >= this.bufferSize) {
             await this.flush();
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         } else if (!this.timer) {
-            this.timer = setTimeout(() => this.flush(), this.flushIntervalMs);
+            this.timer = setTimeout(() => void this.flush(), this.flushIntervalMs);
         }
     }
 
@@ -184,7 +185,7 @@ export class BatchQueue<T> {
         try {
             await Promise.all(batch.map(job => this.processor(job.params)));
         } catch (err) {
-            this.log.error(`Batch flush failed (attempt ${retryCount + 1}):`, err);
+            this.log.error(`Batch flush failed (attempt ${String(retryCount + 1)}):`, err);
 
             if (retryCount < this.maxRetries) {
                 await new Promise(res => setTimeout(res, 1000));

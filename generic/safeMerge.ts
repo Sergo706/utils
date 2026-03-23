@@ -25,7 +25,7 @@ export function safeObjectMerge(
   target: Record<string, unknown>,
   src: Record<string, unknown>,
   opts: { mode?: MergeMode; onConflict?: (key: string, incoming: unknown, existing: unknown) => void } = {},
-  defaultToReserve: Array<string>,
+  defaultToReserve: string[],
   extraReserved?: Set<string>
 ) {
 

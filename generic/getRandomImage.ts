@@ -59,7 +59,7 @@ export function getRandomImage(limit: number): {
             }
 
             return items;
-        } catch (err) {
+        } catch {
             const items: ImageResults[] = [];
             for (let i = 0; i < limit; i++) {
                 const width = 400 + ((i * 37) % 600);

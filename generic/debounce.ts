@@ -14,9 +14,9 @@
  * debouncedLog('test 2'); // Timer resets
  * // 500ms later: "test 2"
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: never[]) => never>(
     action: T,
-    debounceMs: number = 300
+    debounceMs = 300
 ): (...args: Parameters<T>) => void {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 

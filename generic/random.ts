@@ -11,8 +11,8 @@ export class Random {
      * Returns a random integer between 0 and max.
      * @param max - The upper bound (default: 100).
      */
-    getRandomInt(max: number = 100): number {
-        return Math.floor(Math.random() * max)
+    getRandomInt(max = 100): number {
+        return Math.floor(Math.random() * max);
     }
 
     /**
@@ -20,7 +20,7 @@ export class Random {
      * @param min - The lower bound (default: 1).
      * @param max - The upper bound (default: 10).
      */
-    getRandomArbitrary(min: number = 1, max: number = 10): number {
+    getRandomArbitrary(min = 1, max = 10): number {
         return Math.floor(Math.random() * (max - min)) + min;
     }
     
@@ -31,8 +31,8 @@ export class Random {
      */
     getRandomElement<T>(array: T[]): T | undefined {
           if (array.length === 0) {
-                return undefined
+                return undefined;
           }
-        return array[Math.floor(Math.random() * array.length)]
+        return array[Math.floor(Math.random() * array.length)];
     }
 }

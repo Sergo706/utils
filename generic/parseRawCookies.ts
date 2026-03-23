@@ -43,6 +43,7 @@ export function parseCookies(cookies: Record<string, unknown> | string[] | strin
     if (name) {
       const trimmedName = name.trim();
       if (trimmedName && !ATTRIBUTES.has(trimmedName.toLowerCase())) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         result[trimmedName] = decodeURIComponent(val?.trim() || '');
       }
     }
@@ -55,6 +56,7 @@ export function parseCookies(cookies: Record<string, unknown> | string[] | strin
     });
   } else if (typeof cookies === 'string') {
     cookies.split(';').forEach(parsePair);
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (typeof cookies === 'object' && cookies !== null) {
     for (const [key, value] of Object.entries(cookies)) {
       if (typeof value === 'string' || typeof value === 'number') {

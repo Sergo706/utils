@@ -29,9 +29,10 @@ export function findStringsInObject(
   depth = 0,
   maxDepth = 6
 ): string | null {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!input || visited.has(input) || depth > maxDepth) return null;
 
-  visited.add(input as object);
+  visited.add(input);
 
   for (const [k, v] of Object.entries(input as Record<string, unknown>)) {
     if (typeof v === "string") {

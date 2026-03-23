@@ -1,4 +1,4 @@
-type CacheEntry<T> = {
+interface CacheEntry<T> {
   value: T;
   expiry: number;
 };
@@ -8,7 +8,7 @@ type CacheEntry<T> = {
  *
  * @typeParam T - Stored value type.
  */
-export class MiniCache<T = any> {
+export class MiniCache<T = unknown> {
   private store = new Map<string, CacheEntry<T>>();
   private maxEntries: number;
   private sweepTimer: NodeJS.Timeout;
@@ -22,7 +22,7 @@ export class MiniCache<T = any> {
   constructor(maxEntries = Infinity, sweepIntervalMs = 60_000) {
     this.maxEntries = maxEntries;
 
-    this.sweepTimer = setInterval(() => this.sweepExpired(), sweepIntervalMs);
+    this.sweepTimer = setInterval(() => { this.sweepExpired(); }, sweepIntervalMs);
 
     this.sweepTimer.unref();
   }

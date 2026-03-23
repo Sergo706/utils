@@ -1,6 +1,6 @@
 import pino from "pino";
-const rotationLocks = new Map<string, Promise<any>>();
-const recentResults = new Map<string, any>();
+const rotationLocks = new Map<string, Promise<unknown>>();
+const recentResults = new Map<string, unknown>();
 
 /**
  * Implements a deduplication and caching mechanism for asynchronous actions.
@@ -34,6 +34,7 @@ export async function safeAction<T>(token: string, action: () => Promise<T>, rec
 
     if (rotationLocks.has(token)) {
        
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const result = await rotationLocks.get(token);
         
          if (recentResults.has(token)) {
@@ -48,7 +49,7 @@ export async function safeAction<T>(token: string, action: () => Promise<T>, rec
 
     try {
         const result = await promise;
-        log.debug({PromiseResults: result})
+        log.debug({PromiseResults: result});
         recentResults.set(token, result);
         log.info('Action succeeded. Caching result.');
         

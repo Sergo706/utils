@@ -41,10 +41,11 @@ export function createConfigManager<T>(schema: ZodType<T>, projectName = "App") 
     try {
       const validated = schema.parse(config);  
       const promises = initializations.map(f => f(validated)); 
+      // eslint-disable-next-line @typescript-eslint/await-thenable
       await Promise.all(promises);
 
       cfg = Object.freeze(validated);
-    } catch (err) {
+    } catch (err: unknown) {
       if (err instanceof z.ZodError) {
         const details = err.issues.map(issue => {
           const path = issue.path.length ? issue.path.join(".") : "(root)";
@@ -52,8 +53,9 @@ export function createConfigManager<T>(schema: ZodType<T>, projectName = "App") 
           return `• Path: ${path}\n  Message: ${issue.message}\n  Received: ${received}\n  Code: ${issue.code}`;
         }).join("\n");
         const pretty = z.prettifyError(err);
-        throw new Error(`[${projectName}] Configuration validation failed with ${err.issues.length} error(s):\n${details}\n\nPretty Print:\n${pretty}`);
+        throw new Error(`[${projectName}] Configuration validation failed with ${String(err.issues.length)} error(s):\n${details}\n\nPretty Print:\n${pretty}`);
       }
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       throw new Error(`[${projectName}] Failed to process configuration: ${err}`);
     }
   }

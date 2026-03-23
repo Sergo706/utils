@@ -4,7 +4,7 @@
  * @returns The string with the first letter uppercase.
  */
 export function capitalize(target: string): string {
-    return target.charAt(0).toUpperCase() + target.slice(1)
+    return target.charAt(0).toUpperCase() + target.slice(1);
 }
 
 /**
@@ -13,11 +13,11 @@ export function capitalize(target: string): string {
  * @returns The sentence with every word capitalized.
  */
 export function capitalizeSentence(target: string): string {
-    const words = target.split(' ')
+    const words = target.split(' ');
     const out: string[] = [];
 
     for (const word of words) {
-         out.push(capitalize(word))
+         out.push(capitalize(word));
     }
-    return out.join(' ')
+    return out.join(' ');
 }

@@ -1,4 +1,4 @@
-import child from 'node:child_process'
+import child from 'node:child_process';
 import util from 'node:util';
 import type { ExecOptions } from 'node:child_process';
 

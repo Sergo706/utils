@@ -126,14 +126,14 @@ async function uploadMysql(pool: MysqlPool, tableName: string, loadPath: string,
 
 function rejectAfter(ms: number): Promise<never> {
   return new Promise((_, reject) =>
-    setTimeout(() => reject(new Error(`Operation timed out after ${ms}ms`)), ms)
+    setTimeout(() => { reject(new Error(`Operation timed out after ${String(ms)}ms`)); }, ms)
   );
 }
 
 async function uploadPg(pool: PgPool, tableName: string, loadPath: string, timeoutMs?: number): Promise<void> {
   const client = await pool.connect();
   try {
-    if (timeoutMs) await client.query(`SET statement_timeout = ${timeoutMs}`);
+    if (timeoutMs) await client.query(`SET statement_timeout = ${String(timeoutMs)}`);
     await client.query(`COPY ${tableName} FROM '${loadPath}' WITH (FORMAT csv, HEADER true)`);
   } finally {
     client.release();

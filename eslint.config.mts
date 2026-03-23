@@ -5,5 +5,5 @@ import {defineStrictTSConfig} from './eslint/strict.ts.config.js'
 
 export default defineStrictTSConfig({
     rootDir: import.meta.dirname,
-    extraIgnores: ['eslint/**']
+    extraIgnores: ['eslint/**', '*.config.*']
 });

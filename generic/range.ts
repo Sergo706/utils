@@ -42,5 +42,5 @@ export function range(start: number, end: number, step = 1, inclusiveStart = fal
             }
             return { done: true, value: undefined };
         }
-    }
+    };
 }

@@ -14,7 +14,8 @@
  * debouncedLog('test 2'); // Timer resets
  * // 500ms later: "test 2"
  */
-export function debounce<T extends (...args: never[]) => never>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function debounce<T extends (...args: any[]) => any>(
     action: T,
     debounceMs = 300
 ): (...args: Parameters<T>) => void {

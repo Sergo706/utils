@@ -34,7 +34,6 @@ export async function safeAction<T>(token: string, action: () => Promise<T>, rec
 
     if (rotationLocks.has(token)) {
        
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const result = await rotationLocks.get(token);
         
          if (recentResults.has(token)) {

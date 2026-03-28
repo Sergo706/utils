@@ -151,33 +151,33 @@ export class BatchQueue<T> {
     /**
      * Flushes all currently queued jobs by invoking the processor for each one in parallel.
      *
-     * - If a flush is already in progress, it waits for it to finish. If new jobs were added
-     * during that time, it triggers another flush.
-     * - On failure the entire batch is re-queued and retried up to `maxRetries` times.
+     * - If a flush is already in progress, waits for it to finish, then processes any jobs
+     * that arrived in the meantime — looping until both the in-flight promise and the job
+     * map are clear.
+     * - On failure the batch is retried up to `maxRetries` times with a 1-second delay.
+     *   The `flushPromise` guard stays set for the entire retry chain so no concurrent
+     *   caller can interleave a duplicate execution.
      * - After the final retry the batch is permanently discarded.
-     *
-     * @param retryCount - Internal retry counter; do not pass this manually.
      */
-    public async flush(retryCount = 0): Promise<void> {
-        if (this.flushPromise) {
-            await this.flushPromise;
-            if (this.jobs.size > 0) return this.flush(retryCount);
-            return;
-        }
-        if (this.timer) {
-            clearTimeout(this.timer);
-            this.timer = null;
-        }
-        if (this.jobs.size === 0) return;
-
-        const currentBatch = Array.from(this.jobs.values());
-        this.jobs.clear();
-
-        this.flushPromise = this.executeBatch(currentBatch, retryCount);
-        try {
-            await this.flushPromise;
-        } finally {
-            this.flushPromise = null;
+    public async flush(): Promise<void> {
+        while (this.flushPromise || this.jobs.size > 0) {
+            if (this.flushPromise) {
+                await this.flushPromise;
+            }
+            if (this.jobs.size > 0) {
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                    this.timer = null;
+                }
+                const currentBatch = Array.from(this.jobs.values());
+                this.jobs.clear();
+                this.flushPromise = this.executeBatch(currentBatch, 0);
+                try {
+                    await this.flushPromise;
+                } finally {
+                    this.flushPromise = null;
+                }
+            }
         }
     }
 
@@ -189,9 +189,7 @@ export class BatchQueue<T> {
 
             if (retryCount < this.maxRetries) {
                 await new Promise(res => setTimeout(res, 1000));
-                batch.forEach(j => this.jobs.set(j.id, j));
-                this.flushPromise = null;
-                return this.flush(retryCount + 1);
+                return this.executeBatch(batch, retryCount + 1);
             }
             this.log.error('Max retries reached. Discarding batch.');
         }

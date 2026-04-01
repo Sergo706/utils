@@ -1,0 +1,22 @@
+{
+  "readme": "./README.md",
+  "entryPoints": [
+    "main.ts",
+    "server/main.ts",
+    "./eslint/strict.ts.config.ts",
+    "./eslint/strict.vue.config.ts",
+    "./eslint/strict.react.config.ts"
+  ],
+  "out": "./docs/api",
+  "tsconfig": "tsconfig.json",
+  "hideGenerator": true, 
+  "includeVersion": true,
+  "name": "API Reference",
+  "plugin": ["typedoc-plugin-markdown"],
+  "logLevel": "Verbose",
+  "entryPointStrategy": "resolve",
+  "flattenOutputFiles": true,
+  "fileExtension": ".md",
+  "modulesFileName": "index",
+  "publicPath": "/api/"
+}

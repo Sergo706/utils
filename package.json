@@ -104,7 +104,8 @@
     "build": "tsdown",
     "lint": "eslint .",
     "test": "npx tsx --test tests/*.test.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "docs:build": "typedoc --options ./typedoc.json"
   },
   "dependencies": {
     "zod": "^4.3.6"
@@ -122,6 +123,8 @@
     "pino": "^10.3.0",
     "publint": "^0.3.18",
     "tsdown": "^0.21.4",
+    "typedoc": "^0.28.18",
+    "typedoc-plugin-markdown": "^4.11.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0"
   },

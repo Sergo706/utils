@@ -1,4 +1,4 @@
-import child from 'node:child_process';
+import child, { spawn } from 'node:child_process';
 import util from 'node:util';
 import type { ExecOptions } from 'node:child_process';
 
@@ -30,8 +30,8 @@ export const run = async (command: string, options: ExecOptions = {}): Promise<R
         };
 
         console.log(`[run]: ${command}`);
-        if (result.stdout) console.log('stdout:', result.stdout);
-        if (result.stderr) console.error('stderr:', result.stderr);
+        if (result.stdout) console.log(`stdout ${command}:`, result.stdout);
+        if (result.stderr) console.error(`stderr ${command}:`, result.stderr);
 
         return result;
     } catch (error: unknown) {
@@ -44,4 +44,42 @@ export const run = async (command: string, options: ExecOptions = {}): Promise<R
         
         throw error;
     }
+};
+
+/**
+ * Spawns a child process to run a shell command, streaming stdout and stderr live to the parent process.
+ *
+ * @param cmd - The command to execute (e.g., 'npx').
+ * @param args - Arguments to pass to the command (default: []).
+ * @param options - Optional spawn options. If `detached` is true, the child will be detached from the parent.
+ *
+ * @returns A promise that resolves when the process exits with code 0, or rejects with an error if the exit code is nonzero or the process fails to start.
+ *
+ * @example
+ *   await spawnRun('npx', ['@riavzon/bot-detector', 'init', '--contact=...']);
+ */
+
+export const spawnRun = async (cmd: string, args = [], options: child.SpawnOptionsWithoutStdio = {}) => {
+
+     await new Promise<void>((resolve, reject) => {
+        const run = spawn(cmd, args, {
+            shell: true,
+            cwd: process.cwd(),
+            ...options,
+        });
+
+        if (options.detached) run.unref();
+
+        console.log(`[run]: ${cmd}`);
+        run.stdout.on('data', (d: string) => process.stdout.write(d));
+        run.stderr.on('data', (d: string) => process.stderr.write(d));
+        run.on('error', (err: Error) => { reject(err); });
+
+        run.on('close', (code: number) => {
+            if (code === 0) resolve();
+            else reject(new Error(`${cmd} exited with code ${String(code)}`));
+        });
+    });
+
+    return;
 };

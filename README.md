@@ -58,8 +58,8 @@ await run('some shell command')
 const up = await uploadCsv(csvPath, 'table_name', pool as PgPool, 'pg');
 const up = await uploadCsv(csvPath, 'table_name', pool as Pool, 'mysql');
 ```
-Check directly the source code to see available utils, docs available via [ts-docs](https://tsdoc.org/), and a dedicated site is coming soon.
-Supports esm and cjs.
+
+Docs: https://docs.riavzon.com/docs/utils
 
 ---
 MIT License

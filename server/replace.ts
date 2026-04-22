@@ -4,10 +4,12 @@ import path from 'node:path';
 
 
 /**
- * Check if a filesystem path exists and is accessible.
- *
- * @param path - Filesystem path to check.
- * @returns `true` when the path exists and is accessible, otherwise `false`.
+ * Determines the presence and accessibility of a filesystem path by attempting to reach it 
+ * via the access API. This function returns a simple boolean to indicate 
+ * whether the path is reachable by the current process, effectively swallowing 
+ * any access-related errors into a false result.
+ * * @param path - The absolute or relative filesystem path to verify.
+ * @returns A promise that resolves to true if the path is accessible, or false otherwise.
  */
 export async function exists(path: string) {
     try { 
@@ -20,16 +22,15 @@ export async function exists(path: string) {
 
 
 /**
- * Replaces a file with a new one using an atomic-swap strategy.
- * @remarks
- * This function ensures data integrity by:
- * 1. Creating a backup of the existing file.
- * 2. Staging the new file in a temporary location.
- * 3. Performing an atomic rename to replace the target.
- * 4. Rolling back to the backup if any step fails.
- * @param existentFile - The path to the file to be replaced.
- * @param newFile - The path to the source file providing the new content.
- * @throws An error if the replacement or rollback fails.
+ * Executes a safe file replacement by using an atomic swap strategy to preserve 
+ * data integrity. The process begins by creating a timestamped backup of the target file 
+ * and staging the new content in a unique temporary location within the same directory. 
+ * Once staged, it performs an atomic `rename` to finalize the replacement. If the operation 
+ * succeeds, both the source and the backup are purged; if any step fails, the function 
+ * attempts to restore the original file from the backup before propagating the error.
+ * * @param existentFile - The path to the file for replacement.
+ * @param newFile - The source path providing the updated content.
+ * @throws An error if the swap fails or if the rollback procedure cannot be completed.
  */
 export async function replaceFile(existentFile: string, newFile: string) {
     const src = path.resolve(newFile);
@@ -72,14 +73,15 @@ export async function replaceFile(existentFile: string, newFile: string) {
 }     
  
 /**
- * Iterates through a source directory and replaces matching files in a destination directory.
- * @remarks
- * This function processes files one-by-one. If a single file replacement fails, 
- * the function will attempt a rollback for that specific file and then throw an error, 
- * halting further replacements.
- * @param existentDir - The directory containing files to be updated.
- * @param newDir - The directory containing the new versions of the files.
- * @throws An error if any individual file replacement fails.
+ * Synchronizes directory content by recursively traversing the source path and applying 
+ * atomic updates to the destination. It ensures that the target's internal structure 
+ * mirrors the source by creating nested directories as they are encountered. 
+ * Replacement happens on a per-file basis; if an individual file swap fail, 
+ * that specific file is rolled back and the entire process halts immediately to 
+ * prevent inconsistent states across the directory tree.
+ *  @param existentDir - The target directory whose contents will be updated or created.
+ * @param newDir - The source directory containing the new versions of the files and folders.
+ * @throws An error if any single file replacement fails or if directory traversal is interrupted.
  */
 export async function replaceDirContent(existentDir: string, newDir: string) {
 

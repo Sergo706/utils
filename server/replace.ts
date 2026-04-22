@@ -21,7 +21,7 @@ export async function exists(path: string) {
 
 /**
  * Replaces a file with a new one using an atomic-swap strategy.
- * * @remarks
+ * @remarks
  * This function ensures data integrity by:
  * 1. Creating a backup of the existing file.
  * 2. Staging the new file in a temporary location.
@@ -34,6 +34,12 @@ export async function exists(path: string) {
 export async function replaceFile(existentFile: string, newFile: string) {
     const src = path.resolve(newFile);
     const dst = path.resolve(existentFile);
+    const dstDir = path.dirname(dst);
+    
+    if (!(await exists(dstDir))) {
+        await fs.mkdir(dstDir, { recursive: true });
+    }
+
     const tmpDst = dst + `.tmp-${Date.now().toString()}-${Math.random().toString(36).slice(2, 6)}`;
     const backup = `${dst}.bak.${Date.now().toString()}`;
 
@@ -41,15 +47,14 @@ export async function replaceFile(existentFile: string, newFile: string) {
         await fs.cp(dst, backup);
     }
 
-    
     try {
         await fs.copyFile(src, tmpDst); 
         await fs.rename(tmpDst, dst);
         await fs.rm(src, { recursive: true, force: true });
 
         if (await exists(backup)) {
-                await fs.rm(backup, { recursive: true, force: true });
-        };
+            await fs.rm(backup, { recursive: true, force: true });
+        }
         console.log(`Successfully replaced ${dst}`);
     } catch (err) {
          if (await exists(backup)) {
@@ -68,7 +73,7 @@ export async function replaceFile(existentFile: string, newFile: string) {
  
 /**
  * Iterates through a source directory and replaces matching files in a destination directory.
- * * @remarks
+ * @remarks
  * This function processes files one-by-one. If a single file replacement fails, 
  * the function will attempt a rollback for that specific file and then throw an error, 
  * halting further replacements.
@@ -78,25 +83,35 @@ export async function replaceFile(existentFile: string, newFile: string) {
  */
 export async function replaceDirContent(existentDir: string, newDir: string) {
 
-     if (!await exists(newDir)) {
-        await fs.mkdir(newDir, { recursive: true });
+     if (!(await exists(existentDir))) {
+        await fs.mkdir(existentDir, { recursive: true });
+     }
+
+     if (!(await exists(newDir))) {
+         console.warn(`Source directory ${newDir} does not exist. Skipping.`);
+         return;
      }
 
      try {
-        const files = await fs.readdir(newDir);
+        const files = await fs.readdir(newDir, { withFileTypes: true });
 
         for (const file of files) {
-            const src = path.join(newDir, file);
-            const dst = path.join(existentDir, file);
+            const src = path.join(newDir, file.name);
+            const dst = path.join(existentDir, file.name);
+            
             try {
-                await replaceFile(dst, src);
+                if (file.isDirectory()) {
+                    await replaceDirContent(dst, src);
+                } else {
+                    await replaceFile(dst, src); 
+                }
             } catch (err) {
                 throw err;
             }
         }
 
      } catch (err) {
-          console.log(`Error replacing old files`, err);
+          console.log(`Error replacing old files in ${existentDir}`, err);
           throw err;
       }
 }

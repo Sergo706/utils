@@ -15,6 +15,7 @@ export * from './generic/promiseLocker.js';
 export * from './generic/random.js';
 export * from './generic/range.js';
 export * from './generic/safeMerge.js';
+export * from './generic/fetchWithRetry.js';
 export { default as textTruncation } from './generic/textTruncation.js';
 export * from  './generic/parseRawCookies.js';
 export * from './generic/validateZodSchema.js';

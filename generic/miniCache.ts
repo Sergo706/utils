@@ -24,7 +24,9 @@ export class MiniCache<T = unknown> {
 
     this.sweepTimer = setInterval(() => { this.sweepExpired(); }, sweepIntervalMs);
 
-    this.sweepTimer.unref();
+    if (typeof this.sweepTimer.unref === 'function') {
+      this.sweepTimer.unref();
+    }
   }
 
   /**

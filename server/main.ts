@@ -4,3 +4,4 @@ export * from './pathResolver.js';
 export * from './replace.js';
 export * from './encryption.js';
 export * from './scheduleTask.js';
+export * from './env.js';
